@@ -7,7 +7,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - GPU_COUNT=2 # Altere para o número de suas GPUs
+      - GPU_COUNT=1 # Altere para o número de suas GPUs
       - HF_TOKEN=seu_token_huggingface # Opcional para modelos privados
     volumes:
       - ./src:/app
