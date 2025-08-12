@@ -6,6 +6,13 @@ Repositório oficial para implementação de um sistema de IA integrado com:
 - RedisGPU
 - NVMe de alto desempenho
 
+## Stack Tecnológica
+- *LLM Engine*: vLLM com continuous batching
+- *Banco de Dados*: RedisAI + FAISS
+- *Orquestração*: Docker Compose + Kubernetes
+- *Monitoramento*: Prometheus + Grafana
+
+
 ## 🚀 Primeiros Passos
 
 ```bash
