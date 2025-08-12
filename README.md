@@ -15,3 +15,12 @@ cd DeepSeek-PowerHouse-Oficial
 
 # Inicie os serviços
 docker compose up --build
+
+# DeepSeek PowerHouse
+
+Motor de IA em tempo real com:
+- DeepSeek-Coder 33B
+- RedisGPU
+- NVMe de alto desempenho
+
+## Como Executar
