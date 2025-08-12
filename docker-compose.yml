@@ -1,14 +1,11 @@
-yaml
-version: '3.8'
-
 services:
   ai-engine:
     build: ./docker/ai-engine
     ports:
       - "8000:8000"
     environment:
-      - GPU_COUNT=1 # Altere para o número de suas GPUs
-      - HF_TOKEN=seu_token_huggingface # Opcional para modelos privados
+      - GPU_COUNT=2  # ATUALIZE PARA SEU NÚMERO DE GPUs
+      # - HF_TOKEN=seu_token  # Descomente se necessário
     volumes:
       - ./src:/app
     deploy:
@@ -16,7 +13,7 @@ services:
         reservations:
           devices:
             - driver: nvidia
-              count: 2 # Deve matchar GPU_COUNT
+              count: 2  # Deve matchar GPU_COUNT
               capabilities: [gpu]
 
   gpu-redis:
