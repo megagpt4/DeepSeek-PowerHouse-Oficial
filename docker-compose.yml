@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  ai-engine:
+    build: ./docker/ai-engine
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/app
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  gpu-redis:
+    image: redislabs/redisai:latest-gpu
+    ports:
+      - "6379:6379"
