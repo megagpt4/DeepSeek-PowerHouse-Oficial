@@ -1,3 +1,4 @@
+yaml
 version: '3.8'
 
 services:
@@ -5,20 +6,25 @@ services:
     build: ./docker/ai-engine
     ports:
       - "8000:8000"
+    environment:
+      - GPU_COUNT=2 # Altere para o número de suas GPUs
+      - HF_TOKEN=seu_token_huggingface # Opcional para modelos privados
     volumes:
       - ./src:/app
-    environment:
-      - GPU_COUNT=1  # Change to the number of GPUs per node
-      - REDIS_HOST=gpu-redis
     deploy:
       resources:
         reservations:
           devices:
             - driver: nvidia
-              count: 1  # Change to the number of GPUs you want to assign
+              count: 2 # Deve matchar GPU_COUNT
               capabilities: [gpu]
 
   gpu-redis:
     image: redislabs/redisai:latest-gpu
     ports:
       - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:
