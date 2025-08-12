@@ -11,7 +11,7 @@ async def startup_event():
     
     # Configuração do motor LLM
     engine_args = EngineArgs(
-        model="deepseek-ai/deepseek-coder-33b-instruct",
+        model="deepseek-ai/deepseek-coder-6.7b-instruct",  # Start with 6.7B, can change to 33B later if enough VRAM
         tensor_parallel_size=int(os.getenv("GPU_COUNT", "1")),
         gpu_memory_utilization=0.95
     )
@@ -27,12 +27,13 @@ async def startup_event():
 def health_check():
     return {
         "status": "online", 
-        "model": "DeepSeek-Coder-33B",
-        "redis": redis_client.ping()
+        "model": "DeepSeek-Coder-6.7B",
+        "redis": "Connected" if redis_client.ping() else "Failed"
     }
 
 @app.post("/generate")
 async def generate_text(prompt: str):
+    # For now, a placeholder. We'll implement actual generation later.
     return {
         "response": "Implementação em progresso...",
         "prompt": prompt
