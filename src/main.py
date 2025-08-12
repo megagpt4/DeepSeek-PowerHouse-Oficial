@@ -1,40 +1,34 @@
 from fastapi import FastAPI
-from vllm import EngineArgs, LLMEngine
-from redis import Redis
+from vllm import AsyncLLMEngine
+from vllm.engine.arg_utils import AsyncEngineArgs
 import os
 
 app = FastAPI()
 
 @app.on_event("startup")
 async def startup_event():
-    global engine, redis_client
-    
-    # Configuração do motor LLM
-    engine_args = EngineArgs(
-        model="deepseek-ai/deepseek-coder-6.7b-instruct",  # Start with 6.7B, can change to 33B later if enough VRAM
+    global engine
+    engine_args = AsyncEngineArgs(
+        model="deepseek-ai/deepseek-coder-6.7b-instruct",
         tensor_parallel_size=int(os.getenv("GPU_COUNT", "1")),
-        gpu_memory_utilization=0.95
+        gpu_memory_utilization=0.95,
+        disable_log_stats=True
     )
-    engine = LLMEngine.from_engine_args(engine_args)
-    
-    # Configuração do Redis
-    redis_client = Redis(
-        host=os.getenv("REDIS_HOST", "gpu-redis"), 
-        port=int(os.getenv("REDIS_PORT", "6379"))
-    )
+    engine = AsyncLLMEngine.from_engine_args(engine_args)
 
 @app.get("/")
 def health_check():
-    return {
-        "status": "online", 
-        "model": "DeepSeek-Coder-6.7B",
-        "redis": "Connected" if redis_client.ping() else "Failed"
-    }
+    return {"status": "online", "gpus": os.getenv("GPU_COUNT", "1")}
 
 @app.post("/generate")
-async def generate_text(prompt: str):
-    # For now, a placeholder. We'll implement actual generation later.
-    return {
-        "response": "Implementação em progresso...",
-        "prompt": prompt
-    }
+async def generate_text(prompt: str, max_tokens: int = 512):
+    from vllm.sampling_params import SamplingParams
+    sampling_params = SamplingParams(
+        temperature=0.8,
+        top_p=0.95,
+        max_tokens=max_tokens
+    )
+    
+    results_generator = engine.generate(prompt, sampling_params)
+    async for request_output in results_generator:
+        return {"response": request_output.outputs[0].text}
