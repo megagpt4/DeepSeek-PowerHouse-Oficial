@@ -7,19 +7,18 @@ services:
       - "8000:8000"
     volumes:
       - ./src:/app
+    environment:
+      - GPU_COUNT=1  # Change to the number of GPUs per node
+      - REDIS_HOST=gpu-redis
     deploy:
       resources:
         reservations:
           devices:
             - driver: nvidia
-              count: all
+              count: 1  # Change to the number of GPUs you want to assign
               capabilities: [gpu]
 
   gpu-redis:
     image: redislabs/redisai:latest-gpu
     ports:
       - "6379:6379"
-    volumes:
-      - redis-data:/data
-volumes:
-   redis-data:
