@@ -1,9 +1,13 @@
-_pycache_/
-*.pyc
-*.pyo
+# Arquivos sensíveis
 .env
-.venv
-.DS_Store
-docker-data/
+secrets.ini
+*.key
+
+# Dados de treino
+datasets/
+models/
+
+# Logs e cache
 *.log
-cache/
+__pycache__/
+.ipynb_checkpoints
