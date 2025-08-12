@@ -13,7 +13,7 @@ services:
         reservations:
           devices:
             - driver: nvidia
-              count: 2  # Deve matchar GPU_COUNT
+              count: 1  # Deve matchar GPU_COUNT
               capabilities: [gpu]
 
   gpu-redis:
