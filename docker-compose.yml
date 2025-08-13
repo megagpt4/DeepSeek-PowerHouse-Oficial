@@ -1,11 +1,13 @@
 services:
   ai-engine:
-    build: ./docker/ai-engine
+    build:
+      context: .
+      dockerfile: docker/ai-engine/dockerfile
     ports:
       - "8100:8000"  # Docker escolherá uma porta livre automaticamente
     environment:
       - GPU_COUNT=1  # ATUALIZE PARA SEU NÚMERO DE GPUs
-      # - HF_TOKEN=seu_token  # Descomente se necessário
+      - HF_TOKEN=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  # Descomente se necessário
     volumes:
       - ./src:/app
     deploy:
