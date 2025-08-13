@@ -4,7 +4,7 @@ services:
     ports:
       - "8100:8000"  # Docker escolherá uma porta livre automaticamente
     environment:
-      - GPU_COUNT=2  # ATUALIZE PARA SEU NÚMERO DE GPUs
+      - GPU_COUNT=1  # ATUALIZE PARA SEU NÚMERO DE GPUs
       # - HF_TOKEN=seu_token  # Descomente se necessário
     volumes:
       - ./src:/app
