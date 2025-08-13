@@ -32,7 +32,3 @@ async def generate_text(prompt: str, max_tokens: int = 512):
     results_generator = engine.generate(prompt, sampling_params)
     async for request_output in results_generator:
         return {"response": request_output.outputs[0].text}
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
